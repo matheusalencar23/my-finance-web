@@ -41,13 +41,30 @@ public class PlanoContaController : Controller
 
     [HttpGet]
     [Route("Cadastrar")]
-    public IActionResult Cadastrar()
+    [Route("Cadastrar/{Id}")]
+    public IActionResult Cadastrar(int? Id)
     {
-        return View();
+        if (Id != null)
+        {
+            var planoConta = _planoContaService.RetornarRegistro((int)Id);
+            var planoContaModel = new PlanoContaModel()
+            {
+                Id = planoConta.Id,
+                Descricao = planoConta.Descricao,
+                Tipo = planoConta.Tipo,
+            };
+
+            return View(planoContaModel);
+        }
+        else
+        {
+            return View();
+        }
     }
 
     [HttpPost]
     [Route("Cadastrar")]
+    [Route("Cadastrar/{Id}")]
     public IActionResult Cadastrar(PlanoContaModel model)
     {
         var planoConta = new PlanoConta()
