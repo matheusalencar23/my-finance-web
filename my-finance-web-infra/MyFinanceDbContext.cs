@@ -8,6 +8,6 @@ public class MyFinanceDbContext : DbContext
     public DbSet<Transacao> Transacao { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Server=localhost;Database=myfinance;User Id=SA;Password=1q2w3e4r@#$;");
+        optionsBuilder.UseSqlServer(@"Server=localhost;Database=myfinance;User Id=SA;Password=1q2w3e4r@#$;TrustServerCertificate=true;");
     }
 }

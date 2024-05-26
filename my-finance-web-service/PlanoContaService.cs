@@ -3,51 +3,49 @@ using my_finance_web_domain.Entities;
 using my_finance_web_infra;
 using my_finance_web_service.Interfaces;
 
-namespace my_finance_web_service
+namespace my_finance_web_service;
+public class PlanoContaService : IPlanoContaService
 {
-    public class PlanoContaService : IPlanoContaService
+    private readonly MyFinanceDbContext _dbContext;
+    public PlanoContaService(MyFinanceDbContext dbContext)
     {
-        private readonly MyFinanceDbContext _dbContext;
-        public PlanoContaService(MyFinanceDbContext dbContext)
+        _dbContext = dbContext;
+    }
+
+    public void Cadastrar(PlanoConta Entidade)
+    {
+
+        var dbSet = _dbContext.PlanoConta;
+
+        if (Entidade.Id == null)
         {
-            _dbContext = dbContext;
+            dbSet.Add(Entidade);
+        }
+        else
+        {
+            dbSet.Attach(Entidade);
+            _dbContext.Entry(Entidade).State = EntityState.Modified;
         }
 
-        public void Cadastrar(PlanoConta Entidade)
-        {
+        _dbContext.SaveChanges();
+    }
 
-            var dbSet = _dbContext.PlanoConta;
+    public void Excluir(int Id)
+    {
+        var PlanoConta = new PlanoConta() { Id = Id };
+        _dbContext.Attach(PlanoConta);
+        _dbContext.Remove(PlanoConta);
+        _dbContext.SaveChanges();
+    }
 
-            if (Entidade.Id == null)
-            {
-                dbSet.Add(Entidade);
-            }
-            else
-            {
-                dbSet.Attach(Entidade);
-                _dbContext.Entry(Entidade).State = EntityState.Modified;
-            }
+    public List<PlanoConta> ListarRegistros()
+    {
+        var dbSet = _dbContext.PlanoConta;
+        return dbSet.ToList();
+    }
 
-            _dbContext.SaveChanges();
-        }
-
-        public void Excluir(int Id)
-        {
-            var PlanoConta = new PlanoConta() { Id = Id };
-            _dbContext.Attach(PlanoConta);
-            _dbContext.Remove(PlanoConta);
-            _dbContext.SaveChanges();
-        }
-
-        public List<PlanoConta> ListarRegistros()
-        {
-            var dbSet = _dbContext.PlanoConta;
-            return dbSet.ToList();
-        }
-
-        public PlanoConta RetornarRegistro(int Id)
-        {
-            return _dbContext.PlanoConta.Where(x => x.Id == Id).First();
-        }
+    public PlanoConta RetornarRegistro(int Id)
+    {
+        return _dbContext.PlanoConta.Where(x => x.Id == Id).First();
     }
 }
