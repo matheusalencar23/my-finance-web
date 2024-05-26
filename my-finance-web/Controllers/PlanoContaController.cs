@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using my_finance_web.Models;
+using my_finance_web_domain.Entities;
 using my_finance_web_service.Interfaces;
 
 namespace my_finance_web.Controllers;
@@ -36,6 +37,27 @@ public class PlanoContaController : Controller
 
         ViewBag.ListaPlanoConta = listaPlanoContaModel;
         return View();
+    }
+
+    [HttpGet]
+    [Route("Cadastrar")]
+    public IActionResult Cadastrar()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [Route("Cadastrar")]
+    public IActionResult Cadastrar(PlanoContaModel model)
+    {
+        var planoConta = new PlanoConta()
+        {
+            Id = model.Id,
+            Descricao = model.Descricao,
+            Tipo = model.Tipo,
+        };
+        _planoContaService.Cadastrar(planoConta);
+        return RedirectToAction("Index");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
