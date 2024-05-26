@@ -82,4 +82,12 @@ public class PlanoContaController : Controller
     {
         return View("Error!");
     }
+
+    [HttpGet]
+    [Route("Excluir/{Id}")]
+    public IActionResult Excluir(int? Id)
+    {
+        _planoContaService.Excluir((int)Id);
+        return RedirectToAction("Index");
+    }
 }
