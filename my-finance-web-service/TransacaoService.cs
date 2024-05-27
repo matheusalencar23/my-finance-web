@@ -40,7 +40,7 @@ public class TransacaoService : ITransacaoService
 
     public List<Transacao> ListarRegistros()
     {
-        var dbSet = _dbContext.Transacao;
+        var dbSet = _dbContext.Transacao.Include(x => x.PlanoConta);
         return dbSet.ToList();
     }
 
